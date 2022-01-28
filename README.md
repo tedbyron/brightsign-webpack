@@ -9,15 +9,17 @@ Run `yarn` in the repository root.
 
 ## Development
 
-See [`package.json`](./package.json) scripts. TypeScript's `tsc` can be run with `yarn tsc`.
+See [`package.json`](./package.json) scripts. TypeScript's `tsc` can be run with
+`yarn tsc`.
 
 ### Webpack
 
 - Both JavaScript and Typescript modules will work and are interoperable.
 - [`swc`](https://swc.rs/docs/configuration/compilation) is used to transpile
-  JS/TS.
+  JS/TS, see `ecmaVersion` in the webpack config.
 - BrightSign modules (`@brightsign/...` imports) are automatically included in
-  webpack externals.
+  webpack externals. If more externals are needed, see
+  [combining syntaxes](https://webpack.js.org/configuration/externals/#combining-syntaxes).
 
 ### TypeScript
 

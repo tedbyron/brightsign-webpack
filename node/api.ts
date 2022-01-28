@@ -1,8 +1,9 @@
 import express from 'express'
+
 // This is not an installed dependency, it is only available at runtime on the
 // BrightSign. Because of this, we need to have the TypeScript compiler ignore
-// the import and add it to the webpack config `module.exports.externals` so
-// that webpack doesn't try to resolve the import.
+// the import.
+
 // @ts-expect-error
 import NetworkStatus from '@brightsign/networkstatus'
 
