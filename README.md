@@ -9,8 +9,10 @@ Run `yarn` in the repository root.
 
 ## Development
 
-See [`package.json`](./package.json) scripts. TypeScript's `tsc` can be run with
-`yarn tsc`.
+- See [`package.json`](./package.json) scripts. TypeScript's `tsc` can be run
+  with `yarn tsc`.
+- When running the local development server, append the output HTML file name
+  with its extension to the URL.
 
 ### Webpack
 

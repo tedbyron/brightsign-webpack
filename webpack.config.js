@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
@@ -5,13 +6,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
-// Entrypoints - webpack will output to `dist` one HTML file output per browser
-// entrypoint and one JS file output per node entrypoint.
+const distDir = path.join(__dirname, 'dist')
+const browserDir = path.join(__dirname, 'src')
+const nodeDir = path.join(browserDir, 'node')
 
-// Browser entries are folders in `src/pages`.
-const browserEntrypoints = ['home']
-// Node entries are files in `node`.
-const nodeEntrypoints = ['api']
+const browserEntries = fs.readdirSync(path.join(browserDir, 'pages'))
+const nodeEntries = fs.readdirSync(nodeDir)
 
 // ECMAScript version to transpile to.
 const ecmaVersion = 2015
@@ -27,10 +27,6 @@ const externals = [
     callback()
   }
 ]
-
-const distDir = path.join(__dirname, 'dist')
-const browserDir = path.join(__dirname, 'src')
-const nodeDir = path.join(__dirname, 'node')
 
 const swcOptionsNode = {
   jsc: {
@@ -73,7 +69,7 @@ const terserOptions = {
 }
 
 const browser = (env, argv) => ({
-  entry: Object.fromEntries(browserEntrypoints.map(name => (
+  entry: Object.fromEntries(browserEntries.map(name => (
     [name, path.join(browserDir, 'pages', name, 'index')]
   ))),
   output: {
@@ -161,7 +157,7 @@ const browser = (env, argv) => ({
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
-    ...browserEntrypoints.map(name => (
+    ...browserEntries.map(name => (
       new HtmlWebpackPlugin({
         filename: `${name}.html`,
         chunks: [name]
@@ -185,9 +181,10 @@ const browser = (env, argv) => ({
 })
 
 const node = (env, argv) => ({
-  entry: Object.fromEntries(nodeEntrypoints.map(entryName => (
-    [entryName, path.join(nodeDir, entryName)]
-  ))),
+  entry: Object.fromEntries(nodeEntries.map(entryName => {
+    const baseName = path.basename(entryName, path.extname(entryName))
+    return [baseName, path.join(nodeDir, baseName)]
+  })),
   output: {
     filename: '[name].js',
     path: path.join(distDir, 'node'),

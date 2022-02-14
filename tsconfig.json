@@ -1,10 +1,7 @@
 /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
 {
-  "include": [
-    "src/**/*", 
-    "node/**/*"
-  ],
+  "include": ["src/**/*"],
   "compilerOptions": {
     /* Projects */
 
