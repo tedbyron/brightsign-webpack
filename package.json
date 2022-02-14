@@ -1,5 +1,5 @@
 {
-  "name": "brightsign-webpack",
+  "name": "brightsign-webpack-react",
   "author": "Teddy Byron <ted@tedbyron.com>",
   "private": true,
   "packageManager": "yarn@3.1.1",

@@ -2811,9 +2811,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"brightsign-webpack@workspace:.":
+"brightsign-webpack-react@workspace:.":
   version: 0.0.0-use.local
-  resolution: "brightsign-webpack@workspace:."
+  resolution: "brightsign-webpack-react@workspace:."
   dependencies:
     "@svgr/webpack": ^6.2.1
     "@swc/core": ^1.2.139
