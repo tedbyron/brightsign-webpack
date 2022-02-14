@@ -3,19 +3,15 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    @apply h-[100vi] max-h-[100vi];
-  }
-
-  body, main {
-    @apply h-full max-h-full overflow-scroll;
+  :root, body, main {
+    @apply h-full max-h-screen overflow-hidden;
   }
 
   body, input:disabled {
-    @apply bg-indigo-100;
+    @apply bg-white;
   }
 
-  input {
-    @apply px-6 py-3 border rounded-xl border-indigo-500 border-opacity-25;
+  input[type='button'] {
+    @apply focus:outline-none;
   }
 }

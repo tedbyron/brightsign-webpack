@@ -2,12 +2,13 @@ const path = require('path')
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
 // Entrypoints - webpack will output to `dist` one HTML file output per browser
 // entrypoint and one JS file output per node entrypoint.
 
-// Browser entries are folders in `src`.
+// Browser entries are folders in `src/pages`.
 const browserEntrypoints = ['home']
 // Node entries are files in `node`.
 const nodeEntrypoints = ['api']
@@ -34,7 +35,8 @@ const nodeDir = path.join(__dirname, 'node')
 const swcOptionsNode = {
   jsc: {
     parser: {
-      syntax: 'typescript'
+      syntax: 'typescript',
+      dynamicImport: true
     },
     target: `es${ecmaVersion}`,
     paths: { '~/*': ['./*'] },
@@ -71,8 +73,8 @@ const terserOptions = {
 }
 
 const browser = (env, argv) => ({
-  entry: Object.fromEntries(browserEntrypoints.map(entryName => (
-    [entryName, path.join(browserDir, entryName, 'index')]
+  entry: Object.fromEntries(browserEntrypoints.map(name => (
+    [name, path.join(browserDir, 'pages', name, 'index')]
   ))),
   output: {
     filename: '[name].js',
@@ -82,7 +84,7 @@ const browser = (env, argv) => ({
   module: {
     rules: [
       {
-        test: /(\.m?[jt]s$)|(\.[jt]sx$)/i,
+        test: /\.(m?[jt]s)|([jt]sx)$/i,
         loader: 'swc-loader',
         options: swcOptionsBrowser,
         include: browserDir
@@ -90,7 +92,9 @@ const browser = (env, argv) => ({
       {
         test: /\.css$/i,
         use: [
-          'style-loader',
+          argv.mode === 'production'
+            ? MiniCssExtractPlugin.loader
+            : 'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -129,8 +133,16 @@ const browser = (env, argv) => ({
       },
       {
         test: /\.svg$/i,
+        issuer: /\.[jt]sx$/i,
         loader: '@svgr/webpack',
         options: svgrOptions
+      },
+      {
+        test: /\.mp4$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'videos/[name][ext][query]'
+        }
       }
     ]
   },
@@ -149,8 +161,18 @@ const browser = (env, argv) => ({
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
-    new HtmlWebpackPlugin()
-  ],
+    ...browserEntrypoints.map(name => (
+      new HtmlWebpackPlugin({
+        filename: `${name}.html`,
+        chunks: [name]
+      })
+    ))
+  ].concat(argv.mode === 'production'
+    ? new MiniCssExtractPlugin({
+      filename: 'main.css'
+    })
+    : []
+  ),
   devServer: {
     client: {
       overlay: {
