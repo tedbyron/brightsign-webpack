@@ -1,7 +1,8 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import type { JSX } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
 
 function IndexPage (): JSX.Element {
   const [clickCount, setClickCount] = useState(0)

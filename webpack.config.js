@@ -22,7 +22,7 @@ const externals = [
   // BrightSign modules.
   ({ context, request }, callback) => {
     if (/^@brightsign\/\w+$/i.test(request)) {
-      return callback(null, 'commonjs2 ' + request)
+      return callback(null, `commonjs2 ${request}`)
     }
     callback()
   }
@@ -47,7 +47,15 @@ const swcOptionsBrowser = {
       ...swcOptionsNode.jsc.parser,
       tsx: true
     },
-    transform: { react: { runtime: 'automatic' } }
+    transform: {
+      react:
+        {
+          runtime: 'automatic',
+          importSource: 'preact',
+          pragma: 'h',
+          pragmaFrag: 'Fragment'
+        }
+    }
   }
 }
 
@@ -143,7 +151,13 @@ const browser = (env, argv) => ({
     ]
   },
   resolve: {
-    alias: { '~': __dirname },
+    alias: {
+      '~': __dirname,
+      react: 'preact/compat',
+      'react-dom': 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+      'react/jsx-runtime': 'preact/jsx-runtime'
+    },
     extensions: ['.tsx', '.jsx', '.mts', 'mjs', '.ts', '...']
   },
   optimization: {

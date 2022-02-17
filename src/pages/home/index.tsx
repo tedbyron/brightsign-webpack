@@ -1,12 +1,15 @@
-import { StrictMode } from 'react'
-import { render } from 'react-dom'
+import { render } from 'preact'
 
 import IndexPage from './page'
 import '../../index.css'
 
+let root = document.getElementById('root')
+if (root == null) {
+  root = document.createElement('main')
+  root.id = 'root'
+}
+
 render(
-  <StrictMode>
-    <IndexPage />
-  </StrictMode>,
-  document.getElementById('root')
+  <IndexPage />,
+  root
 )

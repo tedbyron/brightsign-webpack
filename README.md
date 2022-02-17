@@ -1,5 +1,5 @@
 <div align="center">
-  <h1><code>brightsign-webpack-react</code></h1>
+  <h1><code>brightsign-webpack-preact</code></h1>
   <p><strong>Webpack + React + Typescript + Tailwind</strong></p>
 </div>
 
