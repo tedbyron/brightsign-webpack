@@ -1,6 +1,6 @@
 <div align="center">
   <h1><code>brightsign-webpack-preact</code></h1>
-  <p><strong>Webpack + React + Typescript + Tailwind</strong></p>
+  <p><strong>Webpack + Preact + Typescript + Tailwind</strong></p>
 </div>
 
 ## Install
