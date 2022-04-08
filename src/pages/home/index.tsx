@@ -1,5 +1,4 @@
 import { render } from 'preact'
-
 import IndexPage from './page'
 import '../../index.css'
 
